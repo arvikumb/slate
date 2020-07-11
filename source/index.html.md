@@ -1,241 +1,404 @@
----
-title: API Reference
+--- 
 
-language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
+title: Enrollment Service 
 
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
+language_tabs: 
+   - shell 
 
-includes:
-  - errors
+toc_footers: 
+   - <a href='#'>Sign Up for a Developer Key</a> 
+   - <a href='https://github.com/lavkumarv'>Documentation Powered by lav</a> 
 
-search: true
+includes: 
+   - errors 
 
-code_clipboard: true
----
+search: true 
 
-# Introduction
+--- 
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+# Introduction 
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+Enrollment Services will be responsible for the transfer of health insurance applications between any broker to any carrier using a standardized format. In addition, the process will maintain the data synchronization of the enrollment via status messages between the broker and carrier until such time as the application reaches the final disposition.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
 
-# Authentication
+ 
 
-> To authorize, use this code:
+**Version:** 1.0 
 
-```ruby
-require 'kittn'
+# /V1/BROKER/APPLICATIONS
+## ***POST*** 
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+**Summary:** Create Application
 
-```python
-import kittn
+**Description:** Using this opeartion, a Broker can create a new Insurance Application with eHealth Enrollment Service for their carriers. 
+To do this, Brokers will first need to register their platform with eHealth.
 
-api = kittn.authorize('meowmeowmeow')
-```
+Enrollment Services authorizes and authenticates Brokers and performs schema validations to make sure Insurance Application conforms to Enrollment Services "Application" data requirements.
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
+### HTTP Request 
+`***POST*** /v1/broker/applications` 
 
-```javascript
-const kittn = require('kittn');
+**Parameters**
 
-let api = kittn.authorize('meowmeowmeow');
-```
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
 
-> Make sure to replace `meowmeowmeow` with your API key.
+**Responses**
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+# /V1/BROKER/APPLICATIONS/{BROKERAPPLICATIONID}
+## ***GET*** 
 
-`Authorization: meowmeowmeow`
+**Summary:** Retrieve Application
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+**Description:** Broker is requesting the Application details from Enrollment Services.
 
-# Kittens
 
-## Get All Kittens
+### HTTP Request 
+`***GET*** /v1/broker/applications/{brokerApplicationId}` 
 
-```ruby
-require 'kittn'
+**Parameters**
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| timestamp | query |  | No |  |
+| brokerApplicationId | path |  | Yes |  |
 
-```python
-import kittn
+**Responses**
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
 
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
+## ***PUT*** 
 
-```javascript
-const kittn = require('kittn');
+**Summary:** Update Application
 
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
+**Description:** Broker is updating the Application details and sending to Enrollment Services
 
-> The above command returns JSON structured like this:
+### HTTP Request 
+`***PUT*** /v1/broker/applications/{brokerApplicationId}` 
 
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
+**Parameters**
 
-This endpoint retrieves all kittens.
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| brokerApplicationId | path |  | Yes |  |
 
-### HTTP Request
+**Responses**
 
-`GET http://example.com/api/kittens`
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
 
-### Query Parameters
+# /V1/BROKER/APPLICATIONS/{BROKERAPPLICATIONID}/STATUSES
+## ***POST*** 
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+**Summary:** Create Latest Application Status
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
+**Description:** Broker is adding a new Application Status to Enrollment Services
 
-## Get a Specific Kitten
+### HTTP Request 
+`***POST*** /v1/broker/applications/{brokerApplicationId}/statuses` 
 
-```ruby
-require 'kittn'
+**Parameters**
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| brokerApplicationId | path |  | Yes |  |
 
-```python
-import kittn
+**Responses**
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
 
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
+## ***GET*** 
 
-```javascript
-const kittn = require('kittn');
+**Summary:** Retrieve Application Statuses
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
+**Description:** Broker is requesting the Application Status array from Enrollment Services
 
-> The above command returns JSON structured like this:
+### HTTP Request 
+`***GET*** /v1/broker/applications/{brokerApplicationId}/statuses` 
 
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
+**Parameters**
 
-This endpoint retrieves a specific kitten.
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| brokerApplicationId | path |  | Yes |  |
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+**Responses**
 
-### HTTP Request
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
 
-`GET http://example.com/kittens/<ID>`
+# /V1/CARRIER/APPLICATIONS/{CARRIERAPPLICATIONID}/STATUSES
+## ***GET*** 
 
-### URL Parameters
+**Summary:** Retrieve Application Statuses
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+**Description:** Carrier is requesting the Latest Carrier Application Status from Enrollment Services
 
-## Delete a Specific Kitten
+### HTTP Request 
+`***GET*** /v1/carrier/applications/{carrierApplicationId}/statuses` 
 
-```ruby
-require 'kittn'
+**Parameters**
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| carrierApplicationId | path |  | Yes |  |
 
-```python
-import kittn
+**Responses**
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
 
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
+## ***POST*** 
 
-```javascript
-const kittn = require('kittn');
+**Summary:** Create Latest Application Status
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
+**Description:** Carrier is adding a new Application Status to Enrollment Services
 
-> The above command returns JSON structured like this:
+### HTTP Request 
+`***POST*** /v1/carrier/applications/{carrierApplicationId}/statuses` 
 
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
+**Parameters**
 
-This endpoint deletes a specific kitten.
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| carrierApplicationId | path |  | Yes |  |
 
-### HTTP Request
+**Responses**
 
-`DELETE http://example.com/kittens/<ID>`
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
 
-### URL Parameters
+# /V1/CARRIER/APPLICATIONS/{CARRIERAPPLICATIONID}
+## ***GET*** 
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+**Summary:** Retrieve Application
 
+**Description:** Carrier is requesting the Application details from Enrollment Services.
+
+### HTTP Request 
+`***GET*** /v1/carrier/applications/{carrierApplicationId}` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| carrierApplicationId | path |  | Yes |  |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
+
+## ***PUT*** 
+
+**Summary:** Update Application
+
+**Description:** Carrier is updating the Application details and sending to Enrollment Services
+
+### HTTP Request 
+`***PUT*** /v1/carrier/applications/{carrierApplicationId}` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| carrierApplicationId | path |  | Yes |  |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
+
+# /V1/EXAMPLE_CARRIER_API/APPLICATIONS
+## ***POST*** 
+
+**Summary:** Create Application
+
+**Description:** Using this operation, provides the Carrier event to accept the Application through API
+
+### HTTP Request 
+`***POST*** /v1/example_carrier_api/applications` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
+
+# /V1/BROKER/APPLICATIONS/{BROKERAPPLICATIONID}/DOCUMENTS
+## ***POST*** 
+
+**Summary:** Create Application Document
+
+**Description:** Using this opeartion, a Broker can create a new Insurance Application Document with eHealth Enrollment Service for their carriers.
+
+### HTTP Request 
+`***POST*** /v1/broker/applications/{brokerApplicationId}/documents` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| brokerApplicationId | path |  | Yes |  |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
+
+# /V1/CARRIER/APPLICATIONS/{CARRIERAPPLICATIONID}/DOCUMENTS/{DOCUMENTINDEX}
+## ***GET*** 
+
+**Summary:** Retrieve Documents
+
+**Description:** Using this opeartion, a Carrier can request the stored documents by Carrier Application ID and Array Index.
+
+### HTTP Request 
+`***GET*** /v1/carrier/applications/{carrierApplicationId}/documents/{documentIndex}` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| carrierApplicationId | path |  | Yes |  |
+| documentIndex | path |  | Yes |  |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
+
+# /V1/BROKER/APPLICATIONS/{BROKERAPPLICATIONID}/DOCUMENTS/{DOCUMENTINDEX}
+## ***GET*** 
+
+**Summary:** Retrieve Documents
+
+**Description:** Using this operation, a Broker can request the stored documents by Broker Application ID and Document Array Index.
+
+### HTTP Request 
+`***GET*** /v1/broker/applications/{brokerApplicationId}/documents/{documentIndex}` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| brokerApplicationId | path |  | Yes |  |
+| documentIndex | path |  | Yes |  |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
+
+# /V1/EXAMPLE_BROKER_API/APPLICATIONS/{BROKERAPPLICATIONID}/STATUS
+## ***POST*** 
+
+**Summary:** Create Latest Application Status
+
+**Description:** Using this operation, provides the Broker event to accept the Application Status through API
+
+### HTTP Request 
+`***POST*** /v1/example_broker_api/applications/{brokerApplicationId}/status` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| brokerApplicationId | path |  | Yes |  |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
+
+# /V1/EXAMPLE_CARRIER_API/APPLICATIONS/{CARRIERAPPLICATIONID}/STATUS
+## ***POST*** 
+
+**Summary:** Create Latest Application Status
+
+**Description:** Using this operation, provides the Carrier event to accept the Application Status through API
+
+### HTTP Request 
+`***POST*** /v1/example_carrier_api/applications/{carrierApplicationId}/status` 
+
+**Parameters**
+
+| Name | Located in | Description | Required | Type |
+| ---- | ---------- | ----------- | -------- | ---- |
+| carrierApplicationId | path |  | Yes |  |
+
+**Responses**
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | OK |
+| 401 |  |
+| 404 |  |
+| 500 |  |
+
+<!-- Converted with the swagger-to-slate https://github.com/lavkumarv/swagger-to-slate -->
